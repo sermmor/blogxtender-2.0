@@ -1,16 +1,10 @@
 import React, { useState } from 'react';
 import { useEditor } from '../../context/EditorContext';
-import SectionToggle from '../SectionToggle';
 import ColorPickerInput from '../ColorPickerInput';
 import { makeCita } from '../../utils/insertionUtils';
 import * as S from '../../styles/AppCss';
 
-interface Props {
-  isOpen: boolean;
-  onToggle: () => void;
-}
-
-const QuoteSection: React.FC<Props> = ({ isOpen, onToggle }) => {
+const QuoteSection: React.FC = () => {
   const { insertCode } = useEditor();
   const [color, setColor] = useState('fffda5');
   const [enBloque, setEnBloque] = useState(true);
@@ -21,47 +15,38 @@ const QuoteSection: React.FC<Props> = ({ isOpen, onToggle }) => {
   };
 
   return (
-    <>
-      <SectionToggle label="QUOTE" onToggle={onToggle} />
-      {isOpen && (
-        <div id="idCitar">
-          <span style={{ marginLeft: '3px' }}>
-            Quote type:{' '}
-            <label>
-              <input
-                type="radio"
-                name="citaTipo"
-                checked={enBloque}
-                onChange={() => setEnBloque(true)}
-              /> In block.
-            </label>
-            {' '}
-            <label>
-              <input
-                type="radio"
-                name="citaTipo"
-                checked={!enBloque}
-                onChange={() => setEnBloque(false)}
-              /> In line.
-            </label>
-          </span>
-          <br /><br />
-          <span style={{ marginLeft: '3px' }}>
-            Quote color:{' '}
-            <ColorPickerInput value={color} onChange={setColor} />
-          </span>
-          <br />
-          <button
-            style={{ ...S.btStyle2Action(), marginRight: '22px' }}
-            onClick={handleOk}
-          >
-            OK
-          </button>
-          <div style={S.floatstop()}> </div>
-          <br />
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+      <div style={S.sidebarRow()}>
+        <label style={S.sidebarLabel()}>Quote type</label>
+        <div style={S.sidebarRadioGroup()}>
+          <label>
+            <input
+              type="radio"
+              name="citaTipo"
+              checked={enBloque}
+              onChange={() => setEnBloque(true)}
+            />{' '}
+            Block
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="citaTipo"
+              checked={!enBloque}
+              onChange={() => setEnBloque(false)}
+            />{' '}
+            Inline
+          </label>
         </div>
-      )}
-    </>
+      </div>
+      <div style={S.sidebarRow()}>
+        <label style={S.sidebarLabel()}>Quote color</label>
+        <ColorPickerInput value={color} onChange={setColor} />
+      </div>
+      <button style={S.sidebarButton()} onClick={handleOk}>
+        Apply Quote
+      </button>
+    </div>
   );
 };
 

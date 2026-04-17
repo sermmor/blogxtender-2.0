@@ -1,115 +1,506 @@
 /**
- * BlogXtender 2.0 — Inline style functions
- * Converted from App.css (Sergio Martín Moreno, 2012)
- *
- * Each function returns a React.CSSProperties object so it can be used
- * directly as a style prop: <div style={logo()} />
+ * BlogXtender 2.0 – Modern design system
+ * All style functions return React.CSSProperties objects.
  */
 import { CSSProperties } from 'react';
 
-const btnFont: CSSProperties['fontFamily'] =
-  "'Trebuchet MS', Trebuchet, Verdana, sans-serif";
+// ── Design tokens ────────────────────────────────────────────────────────────
 
-// ── Navigation logo ──────────────────────────────────────────────────────────
+const C = {
+  purple:       '#7c3aed',
+  purpleHover:  '#6d28d9',
+  purpleLight:  '#f5f3ff',
+  purpleBorder: '#ddd6fe',
+  white:        '#ffffff',
+  gray50:       '#f9fafb',
+  gray100:      '#f3f4f6',
+  gray200:      '#e5e7eb',
+  gray300:      '#d1d5db',
+  gray400:      '#9ca3af',
+  gray500:      '#6b7280',
+  gray700:      '#374151',
+  gray900:      '#111827',
+};
 
-export const logo = (): CSSProperties => ({
-  float: 'left',
-  fontSize: '20pt',
-  fontWeight: 'bold',
-  fontFamily: 'monospace',
-  marginTop: '12px',
-  marginRight: '18px',
-  border: '1px solid #ccc',
-  backgroundColor: '#efefef',
-  color: '#000000',
-  borderRadius: '7px',
-  paddingRight: '5px',
-  paddingLeft: '5px',
-});
+// ── App shell ────────────────────────────────────────────────────────────────
 
-export const logoVistaPrevia = (): CSSProperties => ({
-  float: 'left',
-  fontSize: '20pt',
-  fontWeight: 'bold',
-  fontFamily: 'monospace',
-  marginTop: '12px',
-  marginRight: '18px',
-  border: '6px solid #ccc',
-  backgroundColor: '#000000',
-  color: '#efefef',
-  paddingRight: '5px',
-  paddingLeft: '5px',
-});
-
-// ── Nav button bar ────────────────────────────────────────────────────────────
-
-export const btCargaGuarda = (): CSSProperties => ({
-  float: 'right',
-  fontSize: '20pt',
-  marginTop: '12px',
-  marginRight: '18px',
+export const appContainer = (): CSSProperties => ({
   display: 'flex',
-  gap: '.5rem',
+  flexDirection: 'column',
+  height: '100vh',
+  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+  backgroundColor: C.white,
+  color: C.gray900,
+  overflow: 'hidden',
 });
 
-// ── Buttons ───────────────────────────────────────────────────────────────────
+// ── Header ───────────────────────────────────────────────────────────────────
 
-/** Link/anchor styled as a button (falsoBoton) */
-export const falsoBoton = (): CSSProperties => ({
-  fontSize: '11pt',
-  fontWeight: 'bold',
-  fontFamily: btnFont,
-  width: '110px',
-  height: '30px',
-  backgroundColor: '#000000',
-  color: '#efefef',
-  borderTop: '7px solid #000000',
-  borderBottom: '6.5px solid #000000',
-  borderRight: '20px solid #000000',
-  borderLeft: '20px solid #000000',
+export const headerBar = (): CSSProperties => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: '0 20px',
+  height: '52px',
+  borderBottom: `1px solid ${C.gray200}`,
+  backgroundColor: C.white,
+  flexShrink: 0,
+});
+
+export const headerLeft = (): CSSProperties => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '16px',
+});
+
+export const headerRight = (): CSSProperties => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '8px',
+});
+
+export const logoText = (): CSSProperties => ({
+  fontSize: '17px',
+  fontWeight: '700',
+  color: C.purple,
+  letterSpacing: '-0.3px',
+  fontFamily: 'Georgia, serif',
+  userSelect: 'none',
+});
+
+export const modeToggleGroup = (): CSSProperties => ({
+  display: 'flex',
   borderRadius: '7px',
-  textDecoration: 'none',
-  cursor: 'pointer',
+  border: `1px solid ${C.gray200}`,
+  overflow: 'hidden',
 });
 
-/** Primary action button (btStyle) */
-export const btStyle = (): CSSProperties => ({
-  fontSize: '11pt',
-  fontWeight: 'bold',
-  fontFamily: btnFont,
-  width: '110px',
-  height: '30px',
-  backgroundColor: '#000000',
-  color: '#efefef',
+export const modeToggleBtn = (active: boolean): CSSProperties => ({
+  padding: '5px 14px',
+  fontSize: '13px',
+  fontWeight: '500',
+  border: 'none',
+  cursor: 'pointer',
+  backgroundColor: active ? C.purple : 'transparent',
+  color: active ? C.white : C.gray500,
+  transition: 'background-color 0.15s, color 0.15s',
+  lineHeight: '1.4',
+});
+
+export const exportBtn = (): CSSProperties => ({
+  padding: '6px 16px',
+  fontSize: '13px',
+  fontWeight: '600',
+  backgroundColor: C.purple,
+  color: C.white,
   border: 'none',
   borderRadius: '7px',
   cursor: 'pointer',
+  lineHeight: '1.4',
 });
 
-/** Float-right confirm button (btStyle2Action) */
-export const btStyle2Action = (): CSSProperties => ({
-  fontSize: '11pt',
-  fontWeight: 'bold',
-  fontFamily: btnFont,
-  width: '110px',
-  height: '30px',
-  backgroundColor: '#000000',
-  color: '#efefef',
-  border: 'none',
-  borderRadius: '7px',
+// ── Toolbar ──────────────────────────────────────────────────────────────────
+
+export const toolbarBar = (): CSSProperties => ({
+  display: 'flex',
+  alignItems: 'center',
+  flexWrap: 'wrap',
+  gap: '1px',
+  padding: '5px 10px',
+  borderBottom: `1px solid ${C.gray200}`,
+  backgroundColor: C.gray50,
+  flexShrink: 0,
+  position: 'relative',
+  userSelect: 'none',
+});
+
+export const toolbarBtn = (active?: boolean): CSSProperties => ({
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  minWidth: '28px',
+  height: '26px',
+  padding: '0 5px',
+  fontSize: '12px',
+  fontWeight: '500',
+  fontFamily: 'inherit',
+  backgroundColor: active ? C.purpleLight : 'transparent',
+  color: active ? C.purple : C.gray700,
+  border: `1px solid ${active ? C.purpleBorder : 'transparent'}`,
+  borderRadius: '5px',
   cursor: 'pointer',
-  float: 'right',
-  marginRight: '5px',
+  whiteSpace: 'nowrap',
+  lineHeight: '1',
+  transition: 'background-color 0.1s',
 });
 
-// ── Utility ───────────────────────────────────────────────────────────────────
-
-/** Stops floating children from overflowing the parent */
-export const floatstop = (): CSSProperties => ({
-  clear: 'both',
+export const toolbarBtnFmt = (style?: CSSProperties): CSSProperties => ({
+  ...toolbarBtn(),
+  ...style,
 });
 
-/** Color swatch selector used in color pickers */
+export const toolbarDivider = (): CSSProperties => ({
+  width: '1px',
+  height: '18px',
+  backgroundColor: C.gray300,
+  margin: '0 3px',
+  flexShrink: 0,
+});
+
+export const toolbarIndentInput = (): CSSProperties => ({
+  width: '34px',
+  height: '24px',
+  fontSize: '11px',
+  textAlign: 'center',
+  border: `1px solid ${C.gray300}`,
+  borderRadius: '4px',
+  padding: '0 3px',
+  color: C.gray700,
+  backgroundColor: C.white,
+});
+
+export const toolbarLabel = (): CSSProperties => ({
+  fontSize: '11px',
+  color: C.gray500,
+  padding: '0 2px',
+  whiteSpace: 'nowrap',
+});
+
+// ── Popovers (link & special chars) ─────────────────────────────────────────
+
+export const popoverWrapper = (): CSSProperties => ({
+  position: 'absolute',
+  top: 'calc(100% + 4px)',
+  left: 0,
+  zIndex: 200,
+  backgroundColor: C.white,
+  border: `1px solid ${C.gray200}`,
+  borderRadius: '8px',
+  boxShadow: '0 6px 20px rgba(0,0,0,0.12)',
+  padding: '8px',
+});
+
+export const linkPopoverInner = (): CSSProperties => ({
+  ...popoverWrapper(),
+  display: 'flex',
+  alignItems: 'center',
+  gap: '6px',
+  minWidth: '300px',
+});
+
+export const linkPopoverInput = (): CSSProperties => ({
+  flex: 1,
+  padding: '6px 10px',
+  fontSize: '13px',
+  border: `1px solid ${C.gray200}`,
+  borderRadius: '6px',
+  outline: 'none',
+  color: C.gray900,
+});
+
+export const linkConfirmBtn = (): CSSProperties => ({
+  padding: '6px 12px',
+  fontSize: '12px',
+  fontWeight: '600',
+  backgroundColor: C.purple,
+  color: C.white,
+  border: 'none',
+  borderRadius: '6px',
+  cursor: 'pointer',
+  flexShrink: 0,
+});
+
+export const linkCancelBtn = (): CSSProperties => ({
+  padding: '6px 8px',
+  fontSize: '12px',
+  backgroundColor: 'transparent',
+  color: C.gray500,
+  border: `1px solid ${C.gray200}`,
+  borderRadius: '6px',
+  cursor: 'pointer',
+  flexShrink: 0,
+});
+
+export const specialCharsDropdown = (): CSSProperties => ({
+  ...popoverWrapper(),
+  display: 'grid',
+  gridTemplateColumns: 'repeat(4, 1fr)',
+  gap: '4px',
+  width: '180px',
+});
+
+export const specialCharBtn = (): CSSProperties => ({
+  padding: '5px',
+  fontSize: '14px',
+  textAlign: 'center',
+  backgroundColor: C.gray50,
+  border: `1px solid ${C.gray200}`,
+  borderRadius: '4px',
+  cursor: 'pointer',
+  color: C.gray700,
+});
+
+// ── Content area ─────────────────────────────────────────────────────────────
+
+export const contentArea = (): CSSProperties => ({
+  display: 'flex',
+  flex: 1,
+  overflow: 'hidden',
+  minHeight: 0,
+});
+
+// ── Editor ───────────────────────────────────────────────────────────────────
+
+export const editorWrapper = (): CSSProperties => ({
+  flex: 1,
+  display: 'flex',
+  flexDirection: 'column',
+  overflow: 'hidden',
+  minWidth: 0,
+});
+
+export const editorTextarea = (): CSSProperties => ({
+  flex: 1,
+  width: '100%',
+  padding: '20px 28px',
+  fontSize: '14px',
+  lineHeight: '1.7',
+  fontFamily: '"SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace',
+  border: 'none',
+  outline: 'none',
+  backgroundColor: C.white,
+  color: C.gray900,
+  overflowY: 'auto',
+});
+
+export const previewArea = (): CSSProperties => ({
+  flex: 1,
+  padding: '28px 40px',
+  overflow: 'auto',
+  fontSize: '16px',
+  lineHeight: '1.8',
+  fontFamily: 'Georgia, "Times New Roman", serif',
+  color: C.gray900,
+  backgroundColor: C.white,
+});
+
+// ── Sidebar ──────────────────────────────────────────────────────────────────
+
+export const sidebarContainer = (open: boolean): CSSProperties => ({
+  width: open ? '300px' : '0',
+  flexShrink: 0,
+  overflow: 'hidden',
+  borderLeft: open ? `1px solid ${C.gray200}` : 'none',
+  backgroundColor: C.white,
+  transition: 'width 0.2s ease',
+  display: 'flex',
+  flexDirection: 'column',
+});
+
+export const sidebarHeader = (): CSSProperties => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: '10px 14px',
+  borderBottom: `1px solid ${C.gray200}`,
+  flexShrink: 0,
+  minWidth: '300px',
+});
+
+export const sidebarTitle = (): CSSProperties => ({
+  fontSize: '12px',
+  fontWeight: '700',
+  color: C.gray700,
+  textTransform: 'uppercase',
+  letterSpacing: '0.5px',
+});
+
+export const sidebarCloseBtn = (): CSSProperties => ({
+  width: '22px',
+  height: '22px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  border: 'none',
+  backgroundColor: 'transparent',
+  color: C.gray400,
+  cursor: 'pointer',
+  borderRadius: '4px',
+  fontSize: '14px',
+  lineHeight: '1',
+});
+
+export const sidebarContent = (): CSSProperties => ({
+  flex: 1,
+  overflow: 'auto',
+  padding: '14px',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '10px',
+  minWidth: '300px',
+});
+
+// ── Sidebar form elements ─────────────────────────────────────────────────────
+
+export const sidebarLabel = (): CSSProperties => ({
+  display: 'block',
+  fontSize: '11px',
+  fontWeight: '600',
+  color: C.gray500,
+  textTransform: 'uppercase',
+  letterSpacing: '0.4px',
+  marginBottom: '4px',
+});
+
+export const sidebarInput = (): CSSProperties => ({
+  width: '100%',
+  padding: '7px 10px',
+  fontSize: '13px',
+  border: `1px solid ${C.gray200}`,
+  borderRadius: '6px',
+  outline: 'none',
+  color: C.gray900,
+  backgroundColor: C.white,
+  fontFamily: 'inherit',
+});
+
+export const sidebarTextarea = (): CSSProperties => ({
+  width: '100%',
+  padding: '7px 10px',
+  fontSize: '13px',
+  border: `1px solid ${C.gray200}`,
+  borderRadius: '6px',
+  outline: 'none',
+  color: C.gray900,
+  backgroundColor: C.white,
+  fontFamily: 'inherit',
+  minHeight: '80px',
+  resize: 'vertical',
+});
+
+export const sidebarButton = (): CSSProperties => ({
+  padding: '7px 14px',
+  fontSize: '13px',
+  fontWeight: '600',
+  backgroundColor: C.purple,
+  color: C.white,
+  border: 'none',
+  borderRadius: '6px',
+  cursor: 'pointer',
+  alignSelf: 'flex-start',
+  lineHeight: '1.4',
+});
+
+export const sidebarSecondaryButton = (): CSSProperties => ({
+  padding: '7px 14px',
+  fontSize: '13px',
+  fontWeight: '500',
+  backgroundColor: C.gray100,
+  color: C.gray700,
+  border: `1px solid ${C.gray200}`,
+  borderRadius: '6px',
+  cursor: 'pointer',
+  lineHeight: '1.4',
+});
+
+export const sidebarDivider = (): CSSProperties => ({
+  height: '1px',
+  backgroundColor: C.gray200,
+  margin: '2px 0',
+});
+
+export const sidebarRadioGroup = (): CSSProperties => ({
+  display: 'flex',
+  gap: '14px',
+  alignItems: 'center',
+  fontSize: '13px',
+  color: C.gray700,
+});
+
+export const sidebarFieldset = (): CSSProperties => ({
+  border: `1px solid ${C.gray200}`,
+  borderRadius: '8px',
+  padding: '12px',
+  margin: '0',
+});
+
+export const sidebarFieldsetLegend = (): CSSProperties => ({
+  fontSize: '11px',
+  fontWeight: '600',
+  color: C.gray500,
+  padding: '0 6px',
+  textTransform: 'uppercase',
+  letterSpacing: '0.4px',
+});
+
+export const sidebarRow = (): CSSProperties => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '4px',
+});
+
+export const imagePreviewStrip = (): CSSProperties => ({
+  width: '100%',
+  minHeight: '56px',
+  padding: '6px',
+  border: `1px solid ${C.gray200}`,
+  borderRadius: '6px',
+  overflow: 'auto',
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: '4px',
+  backgroundColor: C.gray50,
+});
+
+export const sidebarButtonRow = (): CSSProperties => ({
+  display: 'flex',
+  gap: '8px',
+  alignItems: 'center',
+});
+
+// ── Color picker ─────────────────────────────────────────────────────────────
+
+export const colorPickerWrapper = (): CSSProperties => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '6px',
+});
+
+export const colorPickerRow = (): CSSProperties => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '8px',
+});
+
+export const colorHexInput = (): CSSProperties => ({
+  width: '80px',
+  padding: '5px 8px',
+  fontSize: '12px',
+  border: `1px solid ${C.gray200}`,
+  borderRadius: '5px',
+  fontFamily: 'monospace',
+  color: C.gray700,
+  outline: 'none',
+});
+
+export const colorSwatchRow = (): CSSProperties => ({
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: '3px',
+});
+
+export const colorSwatch = (bg: string): CSSProperties => ({
+  width: '20px',
+  height: '20px',
+  backgroundColor: bg ? `#${bg}` : 'transparent',
+  border: bg ? `1px solid ${C.gray300}` : `1px dashed ${C.gray300}`,
+  borderRadius: '3px',
+  cursor: 'pointer',
+  flexShrink: 0,
+});
+
+// ── Legacy aliases (kept for backward compatibility with old files) ────────────
+
 export const colorSelectorClass = (): CSSProperties => ({
   fontSize: '8pt',
   border: '1px solid #ccc',
@@ -117,99 +508,10 @@ export const colorSelectorClass = (): CSSProperties => ({
   display: 'inline-block',
 });
 
-// ── Main panels ───────────────────────────────────────────────────────────────
+export const floatstop = (): CSSProperties => ({ clear: 'both' });
+export const sectionArea = (): CSSProperties => ({ width: '100%', height: '80px' });
+export const prevToolsEske = (): CSSProperties => imagePreviewStrip();
 
-/** The main editor textarea */
-export const contenidoTextoXtender = (): CSSProperties => ({
-  width: '99.7%',
-  height: '99%',
-});
-
-/** Left editor panel (65 %) */
-export const contentXtender = (): CSSProperties => ({
-  width: '65%',
-  height: '642px',
-  padding: '5px',
-  float: 'left',
-  border: '1px solid #ccc',
-  overflow: 'auto',
-  boxSizing: 'border-box',
-});
-
-/** Right tools panel (32 %) */
-export const toolsXtender = (): CSSProperties => ({
-  width: '32%',
-  height: '642px',
-  marginLeft: '5px',
-  padding: '5px',
-  float: 'left',
-  border: '1px solid #ccc',
-  overflow: 'auto',
-  boxSizing: 'border-box',
-});
-
-// ── Preview panels ────────────────────────────────────────────────────────────
-
-/** Preview HTML content panel */
-export const contentXtenderVistaPrevia = (): CSSProperties => ({
-  width: '65%',
-  minHeight: '656px',
-  padding: '5px',
-  border: '1px solid #ccc',
-  overflow: 'auto',
-  fontFamily: 'Helvetica, serif',
-  fontSize: '11pt',
-  boxSizing: 'border-box',
-});
-
-/** Preview tools panel */
-export const toolsXtenderVistaPrevia = (): CSSProperties => ({
-  width: '32%',
-  minHeight: '656px',
-  marginLeft: '5px',
-  padding: '5px',
-  border: '1px solid #ccc',
-  overflow: 'auto',
-  boxSizing: 'border-box',
-});
-
-/** Underline preview box */
-export const prevToolsVP = (): CSSProperties => ({
-  width: '95%',
-  minHeight: '40px',
-  marginLeft: '5px',
-  padding: '5px',
-  border: '1px solid #ccc',
-  overflow: 'auto',
-});
-
-// ── Tool-section elements ─────────────────────────────────────────────────────
-
-/** Clickable accordion section header */
-export const sectionHeader = (): CSSProperties => ({
-  fontSize: '14pt',
-  fontWeight: 'bold',
-  fontFamily: btnFont,
-  padding: '3px',
-  border: '1px solid #ccc',
-  backgroundColor: '#000000',
-  cursor: 'pointer',
-  color: '#efefef',
-});
-
-/** Textarea inside a tool section */
-export const sectionArea = (): CSSProperties => ({
-  marginLeft: '9px',
-  width: '95%',
-  height: '100px',
-});
-
-/** Thumbnail preview strip (picture list) */
-export const prevToolsEske = (): CSSProperties => ({
-  width: '95%',
-  height: '80px',
-  marginLeft: '5px',
-  padding: '5px',
-  border: '1px solid #ccc',
-  overflow: 'auto',
-});
+// Legacy button style (still used by NoteZoneSection import button)
+export const btStyle = (): CSSProperties => sidebarButton();
+export const btStyle2Action = (): CSSProperties => sidebarButton();

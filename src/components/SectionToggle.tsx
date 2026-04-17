@@ -1,18 +1,6 @@
-import React from 'react';
-import * as S from '../styles/AppCss';
-
-interface Props {
-  label: string;
-  onToggle: () => void;
-}
-
-const SectionToggle: React.FC<Props> = ({ label, onToggle }) => (
-  <>
-    <div style={S.sectionHeader()} onClick={onToggle}>
-      &raquo; {label}
-    </div>
-    <br />
-  </>
-);
-
+/**
+ * SectionToggle — retired in BlogXtender 2.0.
+ * Accordion headers are replaced by the Toolbar + Sidebar design.
+ */
+const SectionToggle = () => null;
 export default SectionToggle;

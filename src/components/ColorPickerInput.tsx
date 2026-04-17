@@ -22,49 +22,56 @@ const ColorPickerInput: React.FC<Props> = ({
   const nativePickerRef = useRef<HTMLInputElement>(null);
   const presets = extraPresets ?? PRESET_COLORS;
 
-  const handleNativeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(e.target.value.replace('#', ''));
-  };
-
   return (
-    <span>
-      <input
-        type="text"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        style={{ width: '70px' }}
-        disabled
-      />
-      {' '}
-      <input
-        ref={nativePickerRef}
-        type="color"
-        value={'#' + value}
-        onChange={handleNativeChange}
-        style={{ marginLeft: '4px', cursor: 'pointer', verticalAlign: 'middle' }}
-        title="Browse color"
-      />
-      <br />
-      <span style={{ marginLeft: '3px' }}>
+    <div style={S.colorPickerWrapper()}>
+      <div style={S.colorPickerRow()}>
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          style={S.colorHexInput()}
+          placeholder="rrggbb"
+          maxLength={6}
+        />
+        <input
+          ref={nativePickerRef}
+          type="color"
+          value={value ? '#' + value : '#ffffff'}
+          onChange={(e) => onChange(e.target.value.replace('#', ''))}
+          style={{ cursor: 'pointer', width: '32px', height: '28px', border: 'none', padding: 0, borderRadius: '4px' }}
+          title="Pick a color"
+        />
+        {value && (
+          <div
+            style={{
+              width: '28px',
+              height: '28px',
+              backgroundColor: '#' + value,
+              border: '1px solid #d1d5db',
+              borderRadius: '5px',
+              flexShrink: 0,
+            }}
+          />
+        )}
+      </div>
+      <div style={S.colorSwatchRow()}>
         {presets.map((c) => (
-          <span
+          <div
             key={c}
-            style={{ ...S.colorSelectorClass(), backgroundColor: '#' + c }}
+            style={S.colorSwatch(c)}
+            title={'#' + c}
             onClick={() => onChange(c)}
-          >
-            &nbsp;&nbsp;&nbsp;&nbsp;
-          </span>
+          />
         ))}
         {includeEmpty && (
-          <span
-            style={S.colorSelectorClass()}
+          <div
+            style={S.colorSwatch('')}
+            title="No color"
             onClick={() => onChange('')}
-          >
-            &nbsp;&nbsp;&nbsp;&nbsp;
-          </span>
+          />
         )}
-      </span>
-    </span>
+      </div>
+    </div>
   );
 };
 

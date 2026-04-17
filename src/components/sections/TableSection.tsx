@@ -1,15 +1,9 @@
 import React, { useState } from 'react';
 import { useEditor } from '../../context/EditorContext';
-import SectionToggle from '../SectionToggle';
 import { makeTable } from '../../utils/insertionUtils';
 import * as S from '../../styles/AppCss';
 
-interface Props {
-  isOpen: boolean;
-  onToggle: () => void;
-}
-
-const TableSection: React.FC<Props> = ({ isOpen, onToggle }) => {
+const TableSection: React.FC = () => {
   const { insertCode } = useEditor();
   const [rows, setRows] = useState('');
   const [cols, setCols] = useState('');
@@ -23,36 +17,33 @@ const TableSection: React.FC<Props> = ({ isOpen, onToggle }) => {
   };
 
   return (
-    <>
-      <SectionToggle label="TABLE" onToggle={onToggle} />
-      {isOpen && (
-        <div id="idTabla">
-          <span style={{ marginLeft: '3px' }}>
-            Number of rows:{' '}
-            <input
-              style={{ marginLeft: '46px' }}
-              type="text"
-              value={rows}
-              onChange={(e) => setRows(e.target.value)}
-            />
-          </span>
-          <br />
-          <span style={{ marginLeft: '3px' }}>
-            Number of columns:{' '}
-            <input
-              style={{ marginLeft: '23px' }}
-              type="text"
-              value={cols}
-              onChange={(e) => setCols(e.target.value)}
-            />
-          </span>
-          <br /><br />
-          <button style={S.btStyle2Action()} onClick={handleOk}>OK</button>
-          <div style={S.floatstop()}> </div>
-          <br />
-        </div>
-      )}
-    </>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+      <div style={S.sidebarRow()}>
+        <label style={S.sidebarLabel()}>Rows</label>
+        <input
+          type="number"
+          min="1"
+          style={S.sidebarInput()}
+          value={rows}
+          onChange={(e) => setRows(e.target.value)}
+          placeholder="e.g. 3"
+        />
+      </div>
+      <div style={S.sidebarRow()}>
+        <label style={S.sidebarLabel()}>Columns</label>
+        <input
+          type="number"
+          min="1"
+          style={S.sidebarInput()}
+          value={cols}
+          onChange={(e) => setCols(e.target.value)}
+          placeholder="e.g. 4"
+        />
+      </div>
+      <button style={S.sidebarButton()} onClick={handleOk}>
+        Insert Table
+      </button>
+    </div>
   );
 };
 

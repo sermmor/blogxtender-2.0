@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useEditor } from '../../context/EditorContext';
-import SectionToggle from '../SectionToggle';
 import ColorPickerInput from '../ColorPickerInput';
 import { makeNoticiaReference } from '../../utils/insertionUtils';
 import { convertirTextoConNotasEnLlaves } from '../../utils/notesUtils';
@@ -12,8 +11,6 @@ const NOTE_ZONE_PRESETS = [
 ];
 
 interface Props {
-  isOpen: boolean;
-  onToggle: () => void;
   pasarANotas: boolean;
   onPasarANotasChange: (v: boolean) => void;
   tituloNota: string;
@@ -23,8 +20,6 @@ interface Props {
 }
 
 const NoteZoneSection: React.FC<Props> = ({
-  isOpen,
-  onToggle,
   pasarANotas,
   onPasarANotasChange,
   tituloNota,
@@ -34,17 +29,17 @@ const NoteZoneSection: React.FC<Props> = ({
 }) => {
   const { textareaRef, insertCode } = useEditor();
 
-  const [refTitulo, setRefTitulo] = React.useState('');
-  const [refEnlace, setRefEnlace] = React.useState('http://');
-  const [refAutor, setRefAutor] = React.useState('');
-  const [refMedio, setRefMedio] = React.useState('');
-  const [refFecha, setRefFecha] = React.useState('');
+  const [refTitulo, setRefTitulo] = useState('');
+  const [refEnlace, setRefEnlace] = useState('https://');
+  const [refAutor, setRefAutor]   = useState('');
+  const [refMedio, setRefMedio]   = useState('');
+  const [refFecha, setRefFecha]   = useState('');
 
   const handleCreateReference = () => {
     const ref = makeNoticiaReference(refTitulo, refEnlace, refAutor, refMedio, refFecha);
     insertCode(ref, '');
     setRefTitulo('');
-    setRefEnlace('http://');
+    setRefEnlace('https://');
     setRefAutor('');
     setRefMedio('');
     setRefFecha('');
@@ -62,108 +57,81 @@ const NoteZoneSection: React.FC<Props> = ({
   };
 
   return (
-    <>
-      <SectionToggle label="NOTE ZONE" onToggle={onToggle} />
-      {isOpen && (
-        <div id="idZonaNotas">
-          <span style={{ marginLeft: '3px' }}>
-            <label>
-              <input
-                type="checkbox"
-                checked={pasarANotas}
-                onChange={(e) => onPasarANotasChange(e.target.checked)}
-              />
-              {' '}Replace text between {'{ }'} in footnote.
-            </label>
-          </span>
-          <br /><br />
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
 
-          <span style={{ marginLeft: '3px' }}>Note title: </span>
-          <span style={{ marginLeft: '14px' }}>
-            <input
-              type="text"
-              value={tituloNota}
-              onChange={(e) => onTituloNotaChange(e.target.value)}
-            />
-          </span>
-          <br /><br />
+      {/* Enable notes */}
+      <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#374151', cursor: 'pointer' }}>
+        <input
+          type="checkbox"
+          checked={pasarANotas}
+          onChange={(e) => onPasarANotasChange(e.target.checked)}
+        />
+        Convert {'{ }'} to footnotes on export
+      </label>
 
-          <span style={{ margin: '5px' }}>
-            Parse text with notes to text between {'{ }'}: {'  '}
-          </span>
-          <button style={{ ...S.btStyle(), marginLeft: '10px' }} onClick={handleImport}>
-            Import
+      <div style={S.sidebarRow()}>
+        <label style={S.sidebarLabel()}>Note title (for anchor IDs)</label>
+        <input
+          type="text"
+          style={S.sidebarInput()}
+          value={tituloNota}
+          onChange={(e) => onTituloNotaChange(e.target.value)}
+          placeholder="e.g. MyArticle"
+        />
+      </div>
+
+      <button style={S.sidebarSecondaryButton()} onClick={handleImport}>
+        Import existing footnotes → {'{ }'}
+      </button>
+
+      <div style={S.sidebarRow()}>
+        <label style={S.sidebarLabel()}>Note zone background color</label>
+        <ColorPickerInput
+          value={colorNota}
+          onChange={onColorNotaChange}
+          extraPresets={NOTE_ZONE_PRESETS}
+          includeEmpty
+        />
+      </div>
+
+      <div style={S.sidebarDivider()} />
+
+      {/* Reference builder */}
+      <fieldset style={S.sidebarFieldset()}>
+        <legend style={S.sidebarFieldsetLegend()}>New reference</legend>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '4px' }}>
+          <div style={S.sidebarRow()}>
+            <label style={S.sidebarLabel()}>Title</label>
+            <input type="text" style={S.sidebarInput()} value={refTitulo}
+              onChange={(e) => setRefTitulo(e.target.value)} placeholder="Article title" />
+          </div>
+          <div style={S.sidebarRow()}>
+            <label style={S.sidebarLabel()}>Link</label>
+            <input type="text" style={S.sidebarInput()} value={refEnlace}
+              onChange={(e) => setRefEnlace(e.target.value)} placeholder="https://…" />
+          </div>
+          <div style={S.sidebarRow()}>
+            <label style={S.sidebarLabel()}>Author</label>
+            <input type="text" style={S.sidebarInput()} value={refAutor}
+              onChange={(e) => setRefAutor(e.target.value)} placeholder="Author name" />
+          </div>
+          <div style={S.sidebarRow()}>
+            <label style={S.sidebarLabel()}>Media outlet</label>
+            <input type="text" style={S.sidebarInput()} value={refMedio}
+              onChange={(e) => setRefMedio(e.target.value)} placeholder="Newspaper, blog…" />
+          </div>
+          <div style={S.sidebarRow()}>
+            <label style={S.sidebarLabel()}>Date</label>
+            <input type="text" style={S.sidebarInput()} value={refFecha}
+              onChange={(e) => setRefFecha(e.target.value)} placeholder="2026-04-17" />
+          </div>
+          <button style={S.sidebarButton()} onClick={handleCreateReference}>
+            Insert reference
           </button>
-          <br /><br />
-
-          <span style={{ margin: '5px' }}>
-            Background color:{' '}
-            <ColorPickerInput
-              value={colorNota}
-              onChange={onColorNotaChange}
-              extraPresets={NOTE_ZONE_PRESETS}
-              includeEmpty
-            />
-          </span>
-          <br /><br />
-
-          <fieldset style={{ marginLeft: '9px' }}>
-            <legend>New reference in note</legend>
-            <label>
-              Title: <input
-                type="text"
-                style={{ marginLeft: '58px' }}
-                value={refTitulo}
-                onChange={(e) => setRefTitulo(e.target.value)}
-              />
-            </label>
-            <br />
-            <label>
-              Link: <input
-                type="text"
-                style={{ marginLeft: '58px' }}
-                value={refEnlace}
-                onChange={(e) => setRefEnlace(e.target.value)}
-              />
-            </label>
-            <br />
-            <label>
-              Author: <input
-                type="text"
-                style={{ marginLeft: '43px' }}
-                value={refAutor}
-                onChange={(e) => setRefAutor(e.target.value)}
-              />
-            </label>
-            <br />
-            <label>
-              Media: <input
-                type="text"
-                style={{ marginLeft: '47px' }}
-                value={refMedio}
-                onChange={(e) => setRefMedio(e.target.value)}
-              />
-            </label>
-            <br />
-            <label>
-              Date: <input
-                type="text"
-                style={{ marginLeft: '58px' }}
-                value={refFecha}
-                onChange={(e) => setRefFecha(e.target.value)}
-              />
-            </label>
-            <button
-              style={{ float: 'right' }}
-              onClick={handleCreateReference}
-            >
-              Create reference
-            </button>
-          </fieldset>
-          <br /><br />
         </div>
-      )}
-    </>
+      </fieldset>
+
+    </div>
   );
 };
 

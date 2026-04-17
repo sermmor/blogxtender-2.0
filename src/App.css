@@ -1,5 +1,5 @@
-/*
- * BlogXtender 2.0
- * All styles have been moved to src/styles/AppCss.ts as inline style functions.
- * This file is intentionally left empty.
- */
+/* BlogXtender 2.0 – global resets */
+*, *::before, *::after { box-sizing: border-box; }
+html, body, #root { height: 100%; margin: 0; padding: 0; }
+body { overflow: hidden; }
+textarea { resize: none; }

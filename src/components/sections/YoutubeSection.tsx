@@ -1,17 +1,11 @@
 import React, { useState } from 'react';
 import { useEditor } from '../../context/EditorContext';
-import SectionToggle from '../SectionToggle';
 import { makeYoutubeCode } from '../../utils/insertionUtils';
 import * as S from '../../styles/AppCss';
 
-interface Props {
-  isOpen: boolean;
-  onToggle: () => void;
-}
-
 type Alignment = 'center' | 'left' | 'right';
 
-const YoutubeSection: React.FC<Props> = ({ isOpen, onToggle }) => {
+const YoutubeSection: React.FC = () => {
   const { insertCode } = useEditor();
   const [alignment, setAlignment] = useState<Alignment>('center');
   const [code, setCode] = useState('');
@@ -26,44 +20,47 @@ const YoutubeSection: React.FC<Props> = ({ isOpen, onToggle }) => {
   };
 
   return (
-    <>
-      <SectionToggle label="YOUTUBE" onToggle={onToggle} />
-      {isOpen && (
-        <div id="idYoutubeInsert">
-          <span style={{ marginLeft: '3px' }}>
-            Alignment:{' '}
-            <label><input type="radio" name="YoutubeInsertAlign" checked={alignment === 'center'} onChange={() => setAlignment('center')} /> Center.</label>
-            {' '}
-            <label><input type="radio" name="YoutubeInsertAlign" checked={alignment === 'left'} onChange={() => setAlignment('left')} /> Left.</label>
-            {' '}
-            <label><input type="radio" name="YoutubeInsertAlign" checked={alignment === 'right'} onChange={() => setAlignment('right')} /> Right.</label>
-          </span>
-          <br /><br />
-          <span style={{ marginLeft: '3px' }}>
-            Youtube embed code:{' '}
-            <input
-              type="text"
-              style={{ marginLeft: '5px' }}
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-            />
-          </span>
-          <br /><br />
-          <span style={{ marginLeft: '3px' }}>
-            Caption: <br />
-            <textarea
-              style={S.sectionArea()}
-              value={caption}
-              onChange={(e) => setCaption(e.target.value)}
-            />
-          </span>
-          <br /><br />
-          <button style={S.btStyle2Action()} onClick={handleOk}>OK</button>
-          <div style={S.floatstop()}> </div>
-          <br />
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+      <div style={S.sidebarRow()}>
+        <label style={S.sidebarLabel()}>Alignment</label>
+        <div style={S.sidebarRadioGroup()}>
+          <label>
+            <input type="radio" name="YoutubeInsertAlign" checked={alignment === 'left'}
+              onChange={() => setAlignment('left')} /> Left
+          </label>
+          <label>
+            <input type="radio" name="YoutubeInsertAlign" checked={alignment === 'center'}
+              onChange={() => setAlignment('center')} /> Center
+          </label>
+          <label>
+            <input type="radio" name="YoutubeInsertAlign" checked={alignment === 'right'}
+              onChange={() => setAlignment('right')} /> Right
+          </label>
         </div>
-      )}
-    </>
+      </div>
+      <div style={S.sidebarRow()}>
+        <label style={S.sidebarLabel()}>YouTube embed code</label>
+        <input
+          type="text"
+          style={S.sidebarInput()}
+          value={code}
+          onChange={(e) => setCode(e.target.value)}
+          placeholder='<iframe src="…"></iframe>'
+        />
+      </div>
+      <div style={S.sidebarRow()}>
+        <label style={S.sidebarLabel()}>Caption</label>
+        <textarea
+          style={S.sidebarTextarea()}
+          value={caption}
+          onChange={(e) => setCaption(e.target.value)}
+          placeholder="Optional caption…"
+        />
+      </div>
+      <button style={S.sidebarButton()} onClick={handleOk}>
+        Insert Video
+      </button>
+    </div>
   );
 };
 

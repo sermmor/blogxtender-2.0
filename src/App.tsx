@@ -1,71 +1,42 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useEditor } from './context/EditorContext';
 import Header from './components/Header';
+import Toolbar from './components/Toolbar';
 import EditorPanel from './components/EditorPanel';
-import ToolsPanel, { SectionsState } from './components/ToolsPanel';
-import PreviewSection from './components/PreviewSection';
+import Sidebar from './components/Sidebar';
 import { createCodeEntry } from './utils/previewUtils';
 import * as S from './styles/AppCss';
 
-const INITIAL_SECTIONS: SectionsState = {
-  idEdicion: false,
-  idHerramientas: false,
-  idTabla: false,
-  idSubrayadoColor: false,
-  idCitar: false,
-  idFraseLateral: false,
-  idYoutubeInsert: false,
-  idImagen: false,
-  idListImagenes: false,
-  idZonaNotas: false,
-};
-
-const SHORTCUT_MAP: Record<string, keyof SectionsState> = {
-  h: 'idHerramientas',
-  e: 'idEdicion',
-  t: 'idTabla',
-  s: 'idSubrayadoColor',
-  c: 'idCitar',
-  f: 'idFraseLateral',
-  y: 'idYoutubeInsert',
-  i: 'idImagen',
-  l: 'idListImagenes',
-  z: 'idZonaNotas',
-};
-
 const App: React.FC = () => {
   const { insertCode, getContent } = useEditor();
-  const [sections, setSections] = useState<SectionsState>(INITIAL_SECTIONS);
-  const [pasarABr, setPasarABr] = useState(false);
-  const [pasarANotas, setPasarANotas] = useState(false);
-  const [tituloNota, setTituloNota] = useState('');
-  const [colorNota, setColorNota] = useState('FFD0DF');
 
-  const toggleSection = useCallback((id: keyof SectionsState) => {
-    setSections((prev) => ({ ...prev, [id]: !prev[id] }));
+  const [mode, setMode] = useState<'edit' | 'preview'>('edit');
+  const [previewHtml, setPreviewHtml] = useState('');
+  const [activeTool, setActiveTool] = useState<string | null>(null);
+
+  // Note-zone / tools settings shared with sidebar sections
+  const [pasarABr, setPasarABr]       = useState(false);
+  const [pasarANotas, setPasarANotas] = useState(false);
+  const [tituloNota, setTituloNota]   = useState('');
+  const [colorNota, setColorNota]     = useState('FFD0DF');
+
+  // Toggle sidebar tool (click same tool again to close)
+  const handleToolToggle = useCallback((tool: string) => {
+    setActiveTool((prev) => (prev === tool ? null : tool));
   }, []);
 
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.altKey && !e.ctrlKey && !e.metaKey) {
-        const sectionId = SHORTCUT_MAP[e.key.toLowerCase()];
-        if (sectionId) {
-          e.preventDefault();
-          toggleSection(sectionId);
-        }
-      } else if (e.ctrlKey && e.key === 'b') {
-        e.preventDefault();
-        insertCode('<span style="font-weight: bold;">', '</span>');
-      } else if (e.ctrlKey && e.key === 'i') {
-        e.preventDefault();
-        insertCode('<span style="font-style: oblique;">', '</span>');
-      }
-    };
-    document.addEventListener('keydown', handler);
-    return () => document.removeEventListener('keydown', handler);
-  }, [toggleSection, insertCode]);
+  // Switch Edit / Preview
+  const handleModeChange = useCallback((newMode: 'edit' | 'preview') => {
+    if (newMode === 'preview') {
+      const content = getContent();
+      const html = createCodeEntry(content, tituloNota, pasarANotas, pasarABr, colorNota);
+      setPreviewHtml(html);
+    }
+    setMode(newMode);
+  }, [getContent, tituloNota, pasarANotas, pasarABr, colorNota]);
 
-  const handleExport = () => {
+  // Export to new window
+  const handleExport = useCallback(() => {
     const content = getContent();
     const html = createCodeEntry(content, tituloNota, pasarANotas, true, colorNota);
     const marcaDeUso = '<br /><br /><i>Created with BlogXtender.</i>';
@@ -99,17 +70,42 @@ const App: React.FC = () => {
       win.document.write(principio + html + mitad + fullHtml + fin);
       win.document.close();
     }
-  };
+  }, [getContent, tituloNota, pasarANotas, colorNota]);
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.ctrlKey && !e.altKey && !e.metaKey) {
+        if (e.key === 'b') {
+          e.preventDefault();
+          insertCode('<span style="font-weight: bold;">', '</span>');
+        } else if (e.key === 'i') {
+          e.preventDefault();
+          insertCode('<span style="font-style: oblique;">', '</span>');
+        }
+      }
+    };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, [insertCode]);
 
   return (
-    <div>
-      <Header onExport={handleExport} />
-
-      <div style={{ display: 'flex', gap: '5px' }}>
-        <EditorPanel />
-        <ToolsPanel
-          sections={sections}
-          onToggleSection={toggleSection}
+    <div style={S.appContainer()}>
+      <Header
+        mode={mode}
+        onModeChange={handleModeChange}
+        onExport={handleExport}
+      />
+      <Toolbar
+        activeTool={activeTool}
+        onToolToggle={handleToolToggle}
+        mode={mode}
+      />
+      <div style={S.contentArea()}>
+        <EditorPanel mode={mode} previewHtml={previewHtml} />
+        <Sidebar
+          activeTool={activeTool}
+          onClose={() => setActiveTool(null)}
           pasarABr={pasarABr}
           onPasarABrChange={setPasarABr}
           pasarANotas={pasarANotas}
@@ -120,34 +116,6 @@ const App: React.FC = () => {
           onColorNotaChange={setColorNota}
         />
       </div>
-
-      <div style={S.floatstop()}> </div>
-      <br />
-      <em>
-        Programmed and designed by Sergio Martín (
-        <a href="https://twitter.com/sermmor" target="_blank" rel="noreferrer">@sermmor</a>
-        ).{' '}
-        <a href="http://www.gnu.org/licenses/gpl.html">GNU GPLv3 License.</a>
-      </em>
-      <div style={S.floatstop()}> </div>
-      <br />
-      <hr />
-
-      <PreviewSection
-        pasarABr={pasarABr}
-        pasarANotas={pasarANotas}
-        tituloNota={tituloNota}
-        colorNota={colorNota}
-      />
-
-      <div style={S.floatstop()}> </div>
-      <br />
-      <em>
-        Programmed and designed by Sergio Martín (
-        <a href="https://twitter.com/sermmor" target="_blank" rel="noreferrer">@sermmor</a>
-        ).{' '}
-        <a href="http://www.gnu.org/licenses/gpl.html">GNU GPLv3 License.</a>
-      </em>
     </div>
   );
 };

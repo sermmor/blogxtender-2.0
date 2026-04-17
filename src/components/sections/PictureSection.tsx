@@ -1,21 +1,15 @@
 import React, { useState } from 'react';
 import { useEditor } from '../../context/EditorContext';
-import SectionToggle from '../SectionToggle';
 import { makeImagen } from '../../utils/insertionUtils';
 import * as S from '../../styles/AppCss';
 
-interface Props {
-  isOpen: boolean;
-  onToggle: () => void;
-}
-
 type Alignment = 'center' | 'left' | 'right';
 
-const PictureSection: React.FC<Props> = ({ isOpen, onToggle }) => {
+const PictureSection: React.FC = () => {
   const { insertCode } = useEditor();
   const [titleImg, setTitleImg] = useState('');
   const [altImg, setAltImg] = useState('');
-  const [urlImg, setUrlImg] = useState('http://');
+  const [urlImg, setUrlImg] = useState('https://');
   const [alignment, setAlignment] = useState<Alignment>('center');
   const [caption, setCaption] = useState('');
 
@@ -23,51 +17,54 @@ const PictureSection: React.FC<Props> = ({ isOpen, onToggle }) => {
     insertCode('', makeImagen(titleImg, altImg, urlImg, caption, alignment));
     setTitleImg('');
     setAltImg('');
-    setUrlImg('http://');
+    setUrlImg('https://');
     setCaption('');
     setAlignment('center');
   };
 
   return (
-    <>
-      <SectionToggle label="PICTURE" onToggle={onToggle} />
-      {isOpen && (
-        <div id="idImagen">
-          <span style={{ marginLeft: '3px' }}>
-            Title image:{' '}
-            <input type="text" style={{ marginLeft: '3px' }} value={titleImg} onChange={(e) => setTitleImg(e.target.value)} />
-          </span>
-          <br /><br />
-          <span style={{ marginLeft: '3px' }}>
-            Alt image:{' '}
-            <input type="text" style={{ marginLeft: '12px' }} value={altImg} onChange={(e) => setAltImg(e.target.value)} />
-          </span>
-          <br /><br />
-          <span style={{ marginLeft: '3px' }}>
-            Url image:{' '}
-            <input type="text" style={{ marginLeft: '12px' }} value={urlImg} onChange={(e) => setUrlImg(e.target.value)} />
-          </span>
-          <br /><br />
-          <span style={{ marginLeft: '3px' }}>
-            Alignment:{' '}
-            <label><input type="radio" name="imagenAlign" checked={alignment === 'center'} onChange={() => setAlignment('center')} /> Center.</label>
-            {' '}
-            <label><input type="radio" name="imagenAlign" checked={alignment === 'left'} onChange={() => setAlignment('left')} /> Left.</label>
-            {' '}
-            <label><input type="radio" name="imagenAlign" checked={alignment === 'right'} onChange={() => setAlignment('right')} /> Right.</label>
-          </span>
-          <br /><br />
-          <span style={{ marginLeft: '3px' }}>
-            Caption: <br />
-            <textarea style={S.sectionArea()} value={caption} onChange={(e) => setCaption(e.target.value)} />
-          </span>
-          <br /><br />
-          <button style={S.btStyle2Action()} onClick={handleOk}>OK</button>
-          <div style={S.floatstop()}> </div>
-          <br />
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+      <div style={S.sidebarRow()}>
+        <label style={S.sidebarLabel()}>Image URL</label>
+        <input type="text" style={S.sidebarInput()} value={urlImg}
+          onChange={(e) => setUrlImg(e.target.value)} placeholder="https://…" />
+      </div>
+      <div style={S.sidebarRow()}>
+        <label style={S.sidebarLabel()}>Alt text</label>
+        <input type="text" style={S.sidebarInput()} value={altImg}
+          onChange={(e) => setAltImg(e.target.value)} placeholder="Describe the image" />
+      </div>
+      <div style={S.sidebarRow()}>
+        <label style={S.sidebarLabel()}>Title</label>
+        <input type="text" style={S.sidebarInput()} value={titleImg}
+          onChange={(e) => setTitleImg(e.target.value)} placeholder="Image title" />
+      </div>
+      <div style={S.sidebarRow()}>
+        <label style={S.sidebarLabel()}>Alignment</label>
+        <div style={S.sidebarRadioGroup()}>
+          <label>
+            <input type="radio" name="imagenAlign" checked={alignment === 'left'}
+              onChange={() => setAlignment('left')} /> Left
+          </label>
+          <label>
+            <input type="radio" name="imagenAlign" checked={alignment === 'center'}
+              onChange={() => setAlignment('center')} /> Center
+          </label>
+          <label>
+            <input type="radio" name="imagenAlign" checked={alignment === 'right'}
+              onChange={() => setAlignment('right')} /> Right
+          </label>
         </div>
-      )}
-    </>
+      </div>
+      <div style={S.sidebarRow()}>
+        <label style={S.sidebarLabel()}>Caption</label>
+        <textarea style={S.sidebarTextarea()} value={caption}
+          onChange={(e) => setCaption(e.target.value)} placeholder="Optional caption…" />
+      </div>
+      <button style={S.sidebarButton()} onClick={handleOk}>
+        Insert Picture
+      </button>
+    </div>
   );
 };
 
