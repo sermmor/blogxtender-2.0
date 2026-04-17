@@ -3,6 +3,7 @@ import { useEditor } from '../../context/EditorContext';
 import SectionToggle from '../SectionToggle';
 import ColorPickerInput from '../ColorPickerInput';
 import { makeCita } from '../../utils/insertionUtils';
+import * as S from '../../styles/AppCss';
 
 interface Props {
   isOpen: boolean;
@@ -50,8 +51,13 @@ const QuoteSection: React.FC<Props> = ({ isOpen, onToggle }) => {
             <ColorPickerInput value={color} onChange={setColor} />
           </span>
           <br />
-          <button className="btStyle2Action" style={{ marginRight: '22px' }} onClick={handleOk}>OK</button>
-          <div className="floatstop"> </div>
+          <button
+            style={{ ...S.btStyle2Action(), marginRight: '22px' }}
+            onClick={handleOk}
+          >
+            OK
+          </button>
+          <div style={S.floatstop()}> </div>
           <br />
         </div>
       )}

@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import * as S from '../styles/AppCss';
 
 const PRESET_COLORS = [
   'fffda5', 'fff4cb', 'ffcfa1', 'e3ffd0',
@@ -22,7 +23,6 @@ const ColorPickerInput: React.FC<Props> = ({
   const presets = extraPresets ?? PRESET_COLORS;
 
   const handleNativeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // native color input returns #rrggbb — strip the #
     onChange(e.target.value.replace('#', ''));
   };
 
@@ -49,8 +49,7 @@ const ColorPickerInput: React.FC<Props> = ({
         {presets.map((c) => (
           <span
             key={c}
-            className="colorSelectorClass"
-            style={{ backgroundColor: '#' + c }}
+            style={{ ...S.colorSelectorClass(), backgroundColor: '#' + c }}
             onClick={() => onChange(c)}
           >
             &nbsp;&nbsp;&nbsp;&nbsp;
@@ -58,7 +57,7 @@ const ColorPickerInput: React.FC<Props> = ({
         ))}
         {includeEmpty && (
           <span
-            className="colorSelectorClass"
+            style={S.colorSelectorClass()}
             onClick={() => onChange('')}
           >
             &nbsp;&nbsp;&nbsp;&nbsp;

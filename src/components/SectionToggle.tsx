@@ -1,4 +1,5 @@
 import React from 'react';
+import * as S from '../styles/AppCss';
 
 interface Props {
   label: string;
@@ -7,7 +8,7 @@ interface Props {
 
 const SectionToggle: React.FC<Props> = ({ label, onToggle }) => (
   <>
-    <div className="sectionHeader" onClick={onToggle}>
+    <div style={S.sectionHeader()} onClick={onToggle}>
       &raquo; {label}
     </div>
     <br />

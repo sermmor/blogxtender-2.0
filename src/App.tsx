@@ -1,11 +1,11 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import './App.css';
 import { useEditor } from './context/EditorContext';
 import Header from './components/Header';
 import EditorPanel from './components/EditorPanel';
 import ToolsPanel, { SectionsState } from './components/ToolsPanel';
 import PreviewSection from './components/PreviewSection';
 import { createCodeEntry } from './utils/previewUtils';
+import * as S from './styles/AppCss';
 
 const INITIAL_SECTIONS: SectionsState = {
   idEdicion: false,
@@ -45,7 +45,6 @@ const App: React.FC = () => {
     setSections((prev) => ({ ...prev, [id]: !prev[id] }));
   }, []);
 
-  // Keyboard shortcuts
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.altKey && !e.ctrlKey && !e.metaKey) {
@@ -122,7 +121,7 @@ const App: React.FC = () => {
         />
       </div>
 
-      <div className="floatstop"> </div>
+      <div style={S.floatstop()}> </div>
       <br />
       <em>
         Programmed and designed by Sergio Martín (
@@ -130,7 +129,7 @@ const App: React.FC = () => {
         ).{' '}
         <a href="http://www.gnu.org/licenses/gpl.html">GNU GPLv3 License.</a>
       </em>
-      <div className="floatstop"> </div>
+      <div style={S.floatstop()}> </div>
       <br />
       <hr />
 
@@ -141,7 +140,7 @@ const App: React.FC = () => {
         colorNota={colorNota}
       />
 
-      <div className="floatstop"> </div>
+      <div style={S.floatstop()}> </div>
       <br />
       <em>
         Programmed and designed by Sergio Martín (

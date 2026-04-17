@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useEditor } from '../../context/EditorContext';
 import SectionToggle from '../SectionToggle';
 import { makeImagen } from '../../utils/insertionUtils';
+import * as S from '../../styles/AppCss';
 
 interface Props {
   isOpen: boolean;
@@ -58,11 +59,11 @@ const PictureSection: React.FC<Props> = ({ isOpen, onToggle }) => {
           <br /><br />
           <span style={{ marginLeft: '3px' }}>
             Caption: <br />
-            <textarea className="sectionArea" value={caption} onChange={(e) => setCaption(e.target.value)} />
+            <textarea style={S.sectionArea()} value={caption} onChange={(e) => setCaption(e.target.value)} />
           </span>
           <br /><br />
-          <button className="btStyle2Action" onClick={handleOk}>OK</button>
-          <div className="floatstop"> </div>
+          <button style={S.btStyle2Action()} onClick={handleOk}>OK</button>
+          <div style={S.floatstop()}> </div>
           <br />
         </div>
       )}

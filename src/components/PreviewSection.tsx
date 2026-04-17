@@ -4,6 +4,7 @@ import ColorPickerInput from './ColorPickerInput';
 import { intercambiaSaltosPorBr } from '../utils/textUtils';
 import { convertirLlavesEnNotas } from '../utils/notesUtils';
 import { createZonaNotas } from '../utils/previewUtils';
+import * as S from '../styles/AppCss';
 
 interface Props {
   pasarABr: boolean;
@@ -83,27 +84,26 @@ const PreviewSection: React.FC<Props> = ({
 
   return (
     <>
-      <div id="logoVistaPrevia">Preview</div>
-      <div className="btCargaGuarda" id="nav2">
-        <button className="btStyle" onClick={handleRefreshPreview}>Refresh Preview</button>
-        {' '}
-        <button className="btStyle" onClick={handlePrint}>Print</button>
-        {' '}
-        <button className="falsoBoton" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Edit Text</button>
+      {/* anchor target for the "Preview" link in the header */}
+      <div id="logoVistaPrevia" style={S.logoVistaPrevia()}>Preview</div>
+      <div style={S.btCargaGuarda()}>
+        <button style={S.btStyle()} onClick={handleRefreshPreview}>Refresh Preview</button>
+        <button style={S.btStyle()} onClick={handlePrint}>Print</button>
+        <button style={S.falsoBoton()} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Edit Text</button>
       </div>
-      <div className="floatstop"> </div>
+      <div style={S.floatstop()}> </div>
       <br />
 
       <div style={{ display: 'flex', gap: '5px' }}>
-        {/* Preview content panel */}
+        {/* Preview content */}
         <div
-          id="contentXtenderVistaPrevia"
+          style={S.contentXtenderVistaPrevia()}
           onMouseUp={handleMouseUp}
           dangerouslySetInnerHTML={{ __html: previewHtml }}
         />
 
-        {/* Preview tools panel */}
-        <div id="toolsXtenderVistaPrevia">
+        {/* Preview tools */}
+        <div style={S.toolsXtenderVistaPrevia()}>
           <br />
           <span style={{ margin: '5px' }}>
             Underline type:{' '}
@@ -134,15 +134,15 @@ const PreviewSection: React.FC<Props> = ({
           <span style={{ margin: '5px' }}>Underline preview: </span>
           <br />
           <div
-            id="PrevToolsVP"
+            style={S.prevToolsVP()}
             dangerouslySetInnerHTML={{ __html: underlinePreview }}
           />
           <br />
-          <button className="btStyle2Action" onClick={handleApplyUnderline}>OK</button>
+          <button style={S.btStyle2Action()} onClick={handleApplyUnderline}>OK</button>
         </div>
       </div>
 
-      <div className="floatstop"> </div>
+      <div style={S.floatstop()}> </div>
       <br />
     </>
   );

@@ -1,4 +1,5 @@
 import React from 'react';
+import * as S from '../styles/AppCss';
 
 interface Props {
   onExport: () => void;
@@ -6,13 +7,12 @@ interface Props {
 
 const Header: React.FC<Props> = ({ onExport }) => (
   <>
-    <div id="logo">BlogXtender</div>
-    <div className="btCargaGuarda">
-      <button className="btStyle" onClick={onExport}>Export</button>
-      {' '}
-      <a className="falsoBoton" href="#logoVistaPrevia">Preview</a>
+    <div style={S.logo()}>BlogXtender</div>
+    <div style={S.btCargaGuarda()}>
+      <button style={S.btStyle()} onClick={onExport}>Export</button>
+      <a style={S.falsoBoton()} href="#logoVistaPrevia">Preview</a>
     </div>
-    <div className="floatstop"> </div>
+    <div style={S.floatstop()}> </div>
     <br />
   </>
 );

@@ -1,4 +1,5 @@
 import React from 'react';
+import * as S from '../styles/AppCss';
 import EditionSection from './sections/EditionSection';
 import ToolsSection from './sections/ToolsSection';
 import TableSection from './sections/TableSection';
@@ -48,7 +49,7 @@ const ToolsPanel: React.FC<Props> = ({
   colorNota,
   onColorNotaChange,
 }) => (
-  <div id="toolsXtender">
+  <div style={S.toolsXtender()}>
     <EditionSection
       isOpen={sections.idEdicion}
       onToggle={() => onToggleSection('idEdicion')}

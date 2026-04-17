@@ -4,6 +4,7 @@ import SectionToggle from '../SectionToggle';
 import ColorPickerInput from '../ColorPickerInput';
 import { makeNoticiaReference } from '../../utils/insertionUtils';
 import { convertirTextoConNotasEnLlaves } from '../../utils/notesUtils';
+import * as S from '../../styles/AppCss';
 
 const NOTE_ZONE_PRESETS = [
   'E0F8F7', 'fffda5', 'fff4cb', 'e3ffd0',
@@ -33,7 +34,6 @@ const NoteZoneSection: React.FC<Props> = ({
 }) => {
   const { textareaRef, insertCode } = useEditor();
 
-  // Form state for new reference
   const [refTitulo, setRefTitulo] = React.useState('');
   const [refEnlace, setRefEnlace] = React.useState('http://');
   const [refAutor, setRefAutor] = React.useState('');
@@ -91,7 +91,7 @@ const NoteZoneSection: React.FC<Props> = ({
           <span style={{ margin: '5px' }}>
             Parse text with notes to text between {'{ }'}: {'  '}
           </span>
-          <button className="btStyle" style={{ marginLeft: '10px' }} onClick={handleImport}>
+          <button style={{ ...S.btStyle(), marginLeft: '10px' }} onClick={handleImport}>
             Import
           </button>
           <br /><br />

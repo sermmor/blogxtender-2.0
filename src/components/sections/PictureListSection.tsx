@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useEditor } from '../../context/EditorContext';
 import SectionToggle from '../SectionToggle';
 import { makeImageList } from '../../utils/insertionUtils';
+import * as S from '../../styles/AppCss';
 
 interface Props {
   isOpen: boolean;
@@ -65,18 +66,17 @@ const PictureListSection: React.FC<Props> = ({ isOpen, onToggle }) => {
           <span style={{ marginLeft: '3px' }}>
             Caption: <br />
             <textarea
-              className="sectionArea"
+              style={S.sectionArea()}
               value={captionToAdd}
               onChange={(e) => setCaptionToAdd(e.target.value)}
             />
           </span>
           <br /><br />
-          <button className="btStyle2Action" onClick={handleAdd}>Add to list</button>
-          <div className="floatstop"> </div>
+          <button style={S.btStyle2Action()} onClick={handleAdd}>Add to list</button>
+          <div style={S.floatstop()}> </div>
           <br />
 
-          {/* Thumbnail preview strip */}
-          <div className="prevToolsEske">
+          <div style={S.prevToolsEske()}>
             {images.map((img, idx) => (
               <img
                 key={idx}
@@ -89,8 +89,8 @@ const PictureListSection: React.FC<Props> = ({ isOpen, onToggle }) => {
           </div>
           <br />
 
-          <button className="btStyle2Action" onClick={handleInsert}>OK</button>
-          <div className="floatstop"> </div>
+          <button style={S.btStyle2Action()} onClick={handleInsert}>OK</button>
+          <div style={S.floatstop()}> </div>
           <br />
         </div>
       )}

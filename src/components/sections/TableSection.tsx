@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useEditor } from '../../context/EditorContext';
 import SectionToggle from '../SectionToggle';
 import { makeTable } from '../../utils/insertionUtils';
+import * as S from '../../styles/AppCss';
 
 interface Props {
   isOpen: boolean;
@@ -46,8 +47,8 @@ const TableSection: React.FC<Props> = ({ isOpen, onToggle }) => {
             />
           </span>
           <br /><br />
-          <button className="btStyle2Action" onClick={handleOk}>OK</button>
-          <div className="floatstop"> </div>
+          <button style={S.btStyle2Action()} onClick={handleOk}>OK</button>
+          <div style={S.floatstop()}> </div>
           <br />
         </div>
       )}
