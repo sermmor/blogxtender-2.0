@@ -39,10 +39,12 @@
   font-size: 20pt;
   margin-top: 12px;
   margin-right: 18px;
+  display: flex;
+  gap: .5rem;
 }
 
 /* ---------- Fake link button (anchor styled as button) ---------- */
-a.falsoBoton {
+.falsoBoton {
   font-size: 11pt;
   font-weight: bold;
   font-family: 'Trebuchet MS', Trebuchet, Verdana, sans-serif;
