@@ -1,4 +1,136 @@
 /**
+ * HTML ↔ Markdown converters for BlogXtender output.
+ * Uses the browser's DOMParser so no third-party library is needed.
+ * Handles all tags that BlogXtender's insertionUtils can produce.
+ */
+
+// ── Markdown → HTML ───────────────────────────────────────────────────────────
+
+/**
+ * Convert Markdown to BlogXtender-style HTML.
+ * Produces inline-style spans instead of semantic <b>/<em> for compatibility.
+ */
+export function markdownToHtml(markdown: string): string {
+  const lines = markdown.split('\n');
+  const output: string[] = [];
+  let i = 0;
+
+  while (i < lines.length) {
+    const line = lines[i];
+
+    // ── Blank line ──
+    if (line.trim() === '') {
+      i++;
+      continue;
+    }
+
+    // ── Heading ──
+    const headingMatch = line.match(/^(#{1,6})\s+(.+)$/);
+    if (headingMatch) {
+      const level = headingMatch[1].length;
+      const text = inlineToHtml(headingMatch[2].trim());
+      output.push(`<h${level}>${text}</h${level}>`);
+      i++;
+      continue;
+    }
+
+    // ── Horizontal rule ──
+    if (/^[-*_]{3,}\s*$/.test(line.trim())) {
+      output.push('<hr />');
+      i++;
+      continue;
+    }
+
+    // ── Blockquote ──
+    if (line.startsWith('> ')) {
+      const quoteLines: string[] = [];
+      while (i < lines.length && lines[i].startsWith('> ')) {
+        quoteLines.push(lines[i].slice(2));
+        i++;
+      }
+      const inner = quoteLines.map((l) => inlineToHtml(l)).join('<br />\n');
+      output.push(`<blockquote>${inner}</blockquote>`);
+      continue;
+    }
+
+    // ── Unordered list ──
+    if (/^[-*+]\s/.test(line)) {
+      const items: string[] = [];
+      while (i < lines.length && /^[-*+]\s/.test(lines[i])) {
+        items.push(`    <li>${inlineToHtml(lines[i].replace(/^[-*+]\s/, '').trim())}</li>`);
+        i++;
+      }
+      output.push(`<ul>\n${items.join('\n')}\n</ul>`);
+      continue;
+    }
+
+    // ── Ordered list ──
+    if (/^\d+\.\s/.test(line)) {
+      const items: string[] = [];
+      while (i < lines.length && /^\d+\.\s/.test(lines[i])) {
+        items.push(`    <li>${inlineToHtml(lines[i].replace(/^\d+\.\s/, '').trim())}</li>`);
+        i++;
+      }
+      output.push(`<ol>\n${items.join('\n')}\n</ol>`);
+      continue;
+    }
+
+    // ── Paragraph (collect consecutive non-empty, non-special lines) ──
+    const paraLines: string[] = [];
+    while (
+      i < lines.length &&
+      lines[i].trim() !== '' &&
+      !/^#{1,6}\s/.test(lines[i]) &&
+      !/^[-*_]{3,}\s*$/.test(lines[i].trim()) &&
+      !lines[i].startsWith('> ') &&
+      !/^[-*+]\s/.test(lines[i]) &&
+      !/^\d+\.\s/.test(lines[i])
+    ) {
+      paraLines.push(inlineToHtml(lines[i]));
+      i++;
+    }
+    if (paraLines.length) {
+      output.push(`<p style="text-align:justify;">${paraLines.join('<br />\n')}</p>`);
+    }
+  }
+
+  return output.join('\n');
+}
+
+/** Convert inline Markdown syntax to BlogXtender-style HTML spans. */
+function inlineToHtml(text: string): string {
+  // Image: ![alt](url)  — must be before link rule
+  text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" />');
+
+  // Link: [text](url)
+  text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target=\'_blank\'>$1</a>');
+
+  // Inline code: `code`
+  text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+  // Bold+italic: ***text***
+  text = text.replace(/\*\*\*(.+?)\*\*\*/g,
+    '<span style="font-weight: bold;"><span style="font-style: oblique;">$1</span></span>');
+
+  // Bold: **text**
+  text = text.replace(/\*\*(.+?)\*\*/g, '<span style="font-weight: bold;">$1</span>');
+
+  // Italic: *text* or _text_  (single)
+  text = text.replace(/\*(.+?)\*/g, '<span style="font-style: oblique;">$1</span>');
+  text = text.replace(/(?<!\w)_(.+?)_(?!\w)/g, '<span style="font-style: oblique;">$1</span>');
+
+  // Strikethrough: ~~text~~
+  text = text.replace(/~~(.+?)~~/g, '<span style="text-decoration: line-through;">$1</span>');
+
+  // Superscript: ^text^
+  text = text.replace(/\^(.+?)\^/g, '<span style="vertical-align: super; font-size: 0.75em;">$1</span>');
+
+  return text;
+}
+
+// ── HTML → Markdown ───────────────────────────────────────────────────────────
+
+/**
  * HTML → Markdown converter for BlogXtender output.
  * Uses the browser's DOMParser so no third-party library is needed.
  * Handles all tags that BlogXtender's insertionUtils can produce.

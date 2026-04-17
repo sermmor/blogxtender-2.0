@@ -5,17 +5,19 @@ import Toolbar from './components/Toolbar';
 import EditorPanel from './components/EditorPanel';
 import Sidebar from './components/Sidebar';
 import ExportModal from './components/ExportModal';
+import ImportMarkdownModal from './components/ImportMarkdownModal';
 import { createCodeEntry } from './utils/previewUtils';
 import { htmlToMarkdown } from './utils/markdownUtils';
 import * as S from './styles/AppCss';
 
 const App: React.FC = () => {
-  const { insertCode, getContent } = useEditor();
+  const { insertCode, getContent, textareaRef } = useEditor();
 
   const [mode, setMode] = useState<'edit' | 'preview'>('edit');
   const [previewHtml, setPreviewHtml] = useState('');
   const [activeTool, setActiveTool] = useState<string | null>(null);
   const [exportData, setExportData] = useState<{ embedded: string; full: string; markdown: string } | null>(null);
+  const [showImportModal, setShowImportModal] = useState(false);
 
   // Note-zone / tools settings shared with sidebar sections
   const [pasarABr, setPasarABr]       = useState(false);
@@ -24,6 +26,15 @@ const App: React.FC = () => {
   const [colorNota, setColorNota]     = useState('FFD0DF');
 
   // Toggle sidebar tool (click same tool again to close)
+  // Append imported HTML to textarea
+  const handleImportMarkdown = useCallback((html: string) => {
+    const ta = textareaRef.current;
+    if (!ta) return;
+    ta.value = ta.value + '\n' + html;
+    ta.focus();
+    ta.setSelectionRange(ta.value.length, ta.value.length);
+  }, [textareaRef]);
+
   const handleToolToggle = useCallback((tool: string) => {
     setActiveTool((prev) => (prev === tool ? null : tool));
   }, []);
@@ -84,10 +95,17 @@ const App: React.FC = () => {
           onClose={() => setExportData(null)}
         />
       )}
+      {showImportModal && (
+        <ImportMarkdownModal
+          onImport={handleImportMarkdown}
+          onClose={() => setShowImportModal(false)}
+        />
+      )}
       <Header
         mode={mode}
         onModeChange={handleModeChange}
         onExport={handleExport}
+        onImportMarkdown={() => setShowImportModal(true)}
       />
       <Toolbar
         activeTool={activeTool}

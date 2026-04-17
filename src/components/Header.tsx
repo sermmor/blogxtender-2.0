@@ -5,9 +5,10 @@ interface Props {
   mode: 'edit' | 'preview';
   onModeChange: (mode: 'edit' | 'preview') => void;
   onExport: () => void;
+  onImportMarkdown: () => void;
 }
 
-const Header: React.FC<Props> = ({ mode, onModeChange, onExport }) => (
+const Header: React.FC<Props> = ({ mode, onModeChange, onExport, onImportMarkdown }) => (
   <div style={S.headerBar()}>
     <div style={S.headerLeft()}>
       <span style={S.logoText()}>BlogXtender</span>
@@ -27,6 +28,18 @@ const Header: React.FC<Props> = ({ mode, onModeChange, onExport }) => (
       </div>
     </div>
     <div style={S.headerRight()}>
+      <button
+        style={{
+          ...S.exportBtn(),
+          background: 'transparent',
+          color: '#7c3aed',
+          border: '1px solid #7c3aed',
+        }}
+        onClick={onImportMarkdown}
+        title="Import Markdown and append to editor"
+      >
+        Import MD
+      </button>
       <button style={S.exportBtn()} onClick={onExport}>Export</button>
     </div>
   </div>
