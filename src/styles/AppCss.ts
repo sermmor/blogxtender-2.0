@@ -499,6 +499,135 @@ export const colorSwatch = (bg: string): CSSProperties => ({
   flexShrink: 0,
 });
 
+// ── Export modal ─────────────────────────────────────────────────────────────
+
+export const modalOverlay = (): CSSProperties => ({
+  position: 'fixed',
+  inset: 0,
+  backgroundColor: 'rgba(0,0,0,0.45)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  zIndex: 1000,
+});
+
+export const modalBox = (): CSSProperties => ({
+  backgroundColor: C.white,
+  borderRadius: '12px',
+  boxShadow: '0 20px 60px rgba(0,0,0,0.25)',
+  width: '720px',
+  maxWidth: '95vw',
+  maxHeight: '85vh',
+  display: 'flex',
+  flexDirection: 'column',
+  overflow: 'hidden',
+});
+
+export const modalHead = (): CSSProperties => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: '16px 20px',
+  borderBottom: `1px solid ${C.gray200}`,
+  flexShrink: 0,
+});
+
+export const modalTitle = (): CSSProperties => ({
+  fontSize: '15px',
+  fontWeight: '700',
+  color: C.gray900,
+});
+
+export const modalCloseBtn = (): CSSProperties => ({
+  width: '28px',
+  height: '28px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  border: 'none',
+  backgroundColor: 'transparent',
+  color: C.gray400,
+  cursor: 'pointer',
+  borderRadius: '6px',
+  fontSize: '16px',
+});
+
+export const modalTabBar = (): CSSProperties => ({
+  display: 'flex',
+  borderBottom: `1px solid ${C.gray200}`,
+  padding: '0 20px',
+  gap: '2px',
+  flexShrink: 0,
+  backgroundColor: C.gray50,
+});
+
+export const modalTab = (active: boolean): CSSProperties => ({
+  padding: '10px 16px',
+  fontSize: '13px',
+  fontWeight: active ? '600' : '400',
+  color: active ? C.purple : C.gray500,
+  backgroundColor: 'transparent',
+  border: 'none',
+  borderBottom: active ? `2px solid ${C.purple}` : '2px solid transparent',
+  cursor: 'pointer',
+  marginBottom: '-1px',
+  whiteSpace: 'nowrap',
+});
+
+export const modalBody = (): CSSProperties => ({
+  flex: 1,
+  overflow: 'hidden',
+  display: 'flex',
+  flexDirection: 'column',
+  padding: '16px 20px',
+  gap: '12px',
+  minHeight: 0,
+});
+
+export const modalCode = (): CSSProperties => ({
+  flex: 1,
+  width: '100%',
+  padding: '12px',
+  fontSize: '12px',
+  fontFamily: '"SFMono-Regular", Consolas, monospace',
+  lineHeight: '1.6',
+  border: `1px solid ${C.gray200}`,
+  borderRadius: '8px',
+  backgroundColor: C.gray50,
+  color: C.gray900,
+  resize: 'none',
+  outline: 'none',
+  overflowY: 'auto',
+  minHeight: '0',
+});
+
+export const modalFooter = (): CSSProperties => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: '12px 20px',
+  borderTop: `1px solid ${C.gray200}`,
+  flexShrink: 0,
+  backgroundColor: C.gray50,
+});
+
+export const copyBtn = (copied: boolean): CSSProperties => ({
+  padding: '8px 20px',
+  fontSize: '13px',
+  fontWeight: '600',
+  backgroundColor: copied ? '#059669' : C.purple,
+  color: C.white,
+  border: 'none',
+  borderRadius: '7px',
+  cursor: 'pointer',
+  transition: 'background-color 0.2s',
+});
+
+export const charCount = (): CSSProperties => ({
+  fontSize: '12px',
+  color: C.gray400,
+});
+
 // ── Legacy aliases (kept for backward compatibility with old files) ────────────
 
 export const colorSelectorClass = (): CSSProperties => ({

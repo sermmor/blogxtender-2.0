@@ -4,7 +4,9 @@ import Header from './components/Header';
 import Toolbar from './components/Toolbar';
 import EditorPanel from './components/EditorPanel';
 import Sidebar from './components/Sidebar';
+import ExportModal from './components/ExportModal';
 import { createCodeEntry } from './utils/previewUtils';
+import { htmlToMarkdown } from './utils/markdownUtils';
 import * as S from './styles/AppCss';
 
 const App: React.FC = () => {
@@ -13,6 +15,7 @@ const App: React.FC = () => {
   const [mode, setMode] = useState<'edit' | 'preview'>('edit');
   const [previewHtml, setPreviewHtml] = useState('');
   const [activeTool, setActiveTool] = useState<string | null>(null);
+  const [exportData, setExportData] = useState<{ embedded: string; full: string; markdown: string } | null>(null);
 
   // Note-zone / tools settings shared with sidebar sections
   const [pasarABr, setPasarABr]       = useState(false);
@@ -35,41 +38,23 @@ const App: React.FC = () => {
     setMode(newMode);
   }, [getContent, tituloNota, pasarANotas, pasarABr, colorNota]);
 
-  // Export to new window
+  // Build export data and open modal
   const handleExport = useCallback(() => {
     const content = getContent();
-    const html = createCodeEntry(content, tituloNota, pasarANotas, true, colorNota);
-    const marcaDeUso = '<br /><br /><i>Created with BlogXtender.</i>';
+    const embedded = createCodeEntry(content, tituloNota, pasarANotas, true, colorNota);
+    const marcaDeUso = '\n<br /><br /><i>Created with BlogXtender.</i>';
 
-    const principio =
-      `<?xml version="1.0" encoding="UTF-8"?>\n` +
-      `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtmlll/DTD/xhtmlll.dtd">\n` +
-      `<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es">\n<head>\n` +
-      `  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>\n` +
-      `  <title>BlogXtender - Export</title>\n</head>\n\n<body>\n` +
-      `Code html embedded (to post in a blog or a website):<br />\n` +
-      `<textarea rows="15" cols="93">`;
-
-    const mitad =
-      `</textarea><br /><br />\n` +
-      `Complete HTML code (for create a website with it):<br />\n` +
-      `<textarea rows="15" cols="93">`;
-
-    const fullHtml =
+    const full =
       `<?xml version="1.0" encoding="UTF-8"?>\n` +
       `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtmlll/DTD/xhtmlll.dtd">\n` +
       `<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es">\n<head>\n` +
       `  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>\n` +
       `  <title></title>\n</head>\n\n<body>\n` +
-      html + marcaDeUso + `\n</body>\n</html>\n`;
+      embedded + marcaDeUso + `\n</body>\n</html>\n`;
 
-    const fin = `</textarea><br /><br />\n</body>\n</html>\n`;
+    const markdown = htmlToMarkdown(embedded);
 
-    const win = window.open('', 'export_dialog', 'width=800,height=600,toolbar=0,status=0');
-    if (win) {
-      win.document.write(principio + html + mitad + fullHtml + fin);
-      win.document.close();
-    }
+    setExportData({ embedded, full, markdown });
   }, [getContent, tituloNota, pasarANotas, colorNota]);
 
   // Keyboard shortcuts
@@ -91,6 +76,14 @@ const App: React.FC = () => {
 
   return (
     <div style={S.appContainer()}>
+      {exportData && (
+        <ExportModal
+          embedded={exportData.embedded}
+          full={exportData.full}
+          markdown={exportData.markdown}
+          onClose={() => setExportData(null)}
+        />
+      )}
       <Header
         mode={mode}
         onModeChange={handleModeChange}
