@@ -1,0 +1,201 @@
+/* =====================================================================
+   BlogXtender 2.0 - Styles
+   Converted from original Xtender.css (Sergio Martín Moreno, 2012)
+   ===================================================================== */
+
+/* ---------- Navigation logo ---------- */
+#logo {
+  float: left;
+  font-size: 20pt;
+  font-weight: bold;
+  font-family: monospace;
+  margin-top: 12px;
+  margin-right: 18px;
+  border: 1px solid #ccc;
+  background-color: #efefef;
+  color: #000000;
+  border-radius: 7px;
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+#logoVistaPrevia {
+  float: left;
+  font-size: 20pt;
+  font-weight: bold;
+  font-family: monospace;
+  margin-top: 12px;
+  margin-right: 18px;
+  border: 6px solid #ccc;
+  background-color: #000000;
+  color: #efefef;
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+/* ---------- Nav button bar ---------- */
+.btCargaGuarda {
+  float: right;
+  font-size: 20pt;
+  margin-top: 12px;
+  margin-right: 18px;
+}
+
+/* ---------- Fake link button (anchor styled as button) ---------- */
+a.falsoBoton {
+  font-size: 11pt;
+  font-weight: bold;
+  font-family: 'Trebuchet MS', Trebuchet, Verdana, sans-serif;
+  width: 110px;
+  height: 30px;
+  background-color: #000000;
+  color: #efefef;
+  border-top: 7px solid #000000;
+  border-bottom: 6.5px solid #000000;
+  border-right: 20px solid #000000;
+  border-left: 20px solid #000000;
+  border-radius: 7px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* ---------- Primary action buttons ---------- */
+button.btStyle,
+input.btStyle {
+  font-size: 11pt;
+  font-weight: bold;
+  font-family: 'Trebuchet MS', Trebuchet, Verdana, sans-serif;
+  width: 110px;
+  height: 30px;
+  background-color: #000000;
+  color: #efefef;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+/* ---------- Float-right action button ---------- */
+button.btStyle2Action,
+input.btStyle2Action {
+  font-size: 11pt;
+  font-weight: bold;
+  font-family: 'Trebuchet MS', Trebuchet, Verdana, sans-serif;
+  width: 110px;
+  height: 30px;
+  background-color: #000000;
+  color: #efefef;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  float: right;
+  margin-right: 5px;
+}
+
+/* ---------- Generic text input ---------- */
+input.textStyle {
+  width: 99%;
+}
+
+/* ---------- Float clear ---------- */
+.floatstop {
+  clear: both;
+}
+
+/* ---------- Color swatch selector ---------- */
+.colorSelectorClass {
+  font-size: 8pt;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  display: inline-block;
+}
+
+/* ---------- Main editor textarea ---------- */
+#idContenidoTextoXtender {
+  width: 99.7%;
+  height: 99%;
+}
+
+/* ---------- Left editor panel ---------- */
+#contentXtender {
+  width: 65%;
+  height: 642px;
+  padding: 5px;
+  float: left;
+  border: 1px solid #ccc;
+  overflow: auto;
+  box-sizing: border-box;
+}
+
+/* ---------- Right tools panel ---------- */
+#toolsXtender {
+  width: 32%;
+  height: 642px;
+  margin-left: 5px;
+  padding: 5px;
+  float: left;
+  border: 1px solid #ccc;
+  overflow: auto;
+  box-sizing: border-box;
+}
+
+/* ---------- Preview content panel ---------- */
+#contentXtenderVistaPrevia {
+  width: 65%;
+  min-height: 656px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  overflow: auto;
+  font-family: Helvetica, serif;
+  font-size: 11pt;
+  box-sizing: border-box;
+}
+
+/* ---------- Preview tools panel ---------- */
+#toolsXtenderVistaPrevia {
+  width: 32%;
+  min-height: 656px;
+  margin-left: 5px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  overflow: auto;
+  box-sizing: border-box;
+}
+
+/* ---------- Thumbnail preview strip (picture list) ---------- */
+.prevToolsEske {
+  width: 95%;
+  height: 80px;
+  margin-left: 5px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  overflow: auto;
+}
+
+/* ---------- Section header (clickable accordion) ---------- */
+.sectionHeader {
+  font-size: 14pt;
+  font-weight: bold;
+  font-family: 'Trebuchet MS', Trebuchet, Verdana, sans-serif;
+  padding: 3px;
+  border: 1px solid #ccc;
+  background-color: #000000;
+  cursor: pointer;
+  color: #efefef;
+}
+
+/* ---------- Textarea inside a section ---------- */
+.sectionArea {
+  margin-left: 9px;
+  width: 95%;
+  height: 100px;
+}
+
+/* ---------- Underline preview box ---------- */
+#PrevToolsVP {
+  width: 95%;
+  min-height: 40px;
+  margin-left: 5px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  overflow: auto;
+}
