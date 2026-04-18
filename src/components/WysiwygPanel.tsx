@@ -242,6 +242,7 @@ const WysiwygPanel: React.FC<Props> = ({ initialContent, onUpdate }) => {
           borderTop: 'none',
           borderRadius: '0 0 6px 6px',
           minHeight: 'calc(100vh - 190px)',
+          cursor: 'default',
         }}
       />
 
