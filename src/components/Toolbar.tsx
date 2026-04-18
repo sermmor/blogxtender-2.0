@@ -29,7 +29,7 @@ const SIDEBAR_TOOLS: ToolDef[] = [
 interface Props {
   activeTool: string | null;
   onToolToggle: (tool: string) => void;
-  mode: 'edit' | 'preview';
+  mode: 'edit' | 'wysiwyg' | 'preview';
 }
 
 // ── Divider helper ───────────────────────────────────────────────────────────
@@ -74,7 +74,8 @@ const Toolbar: React.FC<Props> = ({ activeTool, onToolToggle, mode }) => {
 
   const ic = insertCode; // shorter alias
 
-  if (mode === 'preview') return null;
+  // Toolbar only visible in HTML edit mode
+  if (mode !== 'edit') return null;
 
   return (
     <div style={S.toolbarBar()}>
